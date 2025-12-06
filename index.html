@@ -4,49 +4,76 @@
   <meta charset="UTF-8">
   <title>Movie Likert Scale Survey</title>
   <style>
-    body {font-family: Arial, sans-serif; margin: 20px;}
-    h1 {margin-bottom: 20px;}
-    .question {margin-bottom: 20px;}
-    .options label {margin-right: 15px;}
-    .average {font-weight: bold; margin-top: 20px;}
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { margin-bottom: 20px; }
+    .question { margin-bottom: 20px; }
+    .options label { display: block; margin: 8px 0; }
+    .average { font-weight: bold; margin-top: 20px; }
   </style>
 </head>
 <body>
   <h1>Movie Likert Scale Survey</h1>
+
   <form id="survey">
     <div class="question" data-index="0">
       <p>i like this movie</p>
       <div class="options">
-        <label><input type="radio" name="q0" value="0.5">strongly disagree</label><br>
-        <label><input type="radio" name="q0" value="2.0">disagree</label><br>
-        <label><input type="radio" name="q0" value="3.5">agree</label><br>
+        <label><input type="radio" name="q0" value="0.5">strongly disagree</label>
+        <label><input type="radio" name="q0" value="2.0">disagree</label>
+        <label><input type="radio" name="q0" value="3.5">agree</label>
         <label><input type="radio" name="q0" value="5.0">strongly agree</label>
       </div>
     </div>
+
     <div class="question" data-index="1">
       <p>i am satisfied with this movie</p>
       <div class="options">
-        <label><input type="radio" name="q1" value="0.5">strongly disagree</label><br>
-        <label><input type="radio" name="q1" value="2.0">disagree</label><br>
-        <label><input type="radio" name="q1" value="3.5">agree</label><br>
+        <label><input type="radio" name="q1" value="0.5">strongly disagree</label>
+        <label><input type="radio" name="q1" value="2.0">disagree</label>
+        <label><input type="radio" name="q1" value="3.5">agree</label>
         <label><input type="radio" name="q1" value="5.0">strongly agree</label>
       </div>
     </div>
+
     <div class="question" data-index="2">
       <p>i recommend this movie to others</p>
       <div class="options">
-        <label><input type="radio" name="q2" value="0.5">strongly disagree</label><br>
-        <label><input type="radio" name="q2" value="2.0">disagree</label><br>
-        <label><input type="radio" name="q2" value="3.5">agree</label><br>
+        <label><input type="radio" name="q2" value="0.5">strongly disagree</label>
+        <label><input type="radio" name="q2" value="2.0">disagree</label>
+        <label><input type="radio" name="q2" value="3.5">agree</label>
         <label><input type="radio" name="q2" value="5.0">strongly agree</label>
       </div>
     </div>
   </form>
-  <div class="average" id="scoreContainer" style="display: none;">movie score: <span id="average">-</span></div>
+
+  <div class="average" id="scoreContainer" style="display: none;">
+    movie score: <span id="average">-</span>
+  </div>
+
   <script>
-    document.getElementById('survey').addEventListener('change', function() {
+    const form = document.getElementById('survey');
+    const scoreContainer = document.getElementById('scoreContainer');
+    const averageEl = document.getElementById('average');
+
+    // Allow radios to be deselected by clicking the selected option again.
+    form.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('mousedown', function () {
+        this.dataset.wasChecked = this.checked ? "1" : "0";
+      });
+
+      radio.addEventListener('click', function () {
+        if (this.dataset.wasChecked === "1") {
+          this.checked = false;
+          form.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        delete this.dataset.wasChecked;
+      });
+    });
+
+    function updateScore() {
       let sum = 0;
       let count = 0;
+
       document.querySelectorAll('.question').forEach((question, index) => {
         const selected = document.querySelector('input[name="q' + index + '"]:checked');
         if (selected) {
@@ -54,17 +81,18 @@
           count += 1;
         }
       });
-      const scoreContainer = document.getElementById('scoreContainer');
+
       if (count === 3) {
-        // Show the movie score once all questions are answered
         scoreContainer.style.display = 'block';
-        document.getElementById('average').textContent = (sum / count).toFixed(2);
+        averageEl.textContent = (sum / count).toFixed(2);
       } else {
-        // Hide the score until all answers are selected
         scoreContainer.style.display = 'none';
-        document.getElementById('average').textContent = '-';
+        averageEl.textContent = '-';
       }
-    });
+    }
+
+    form.addEventListener('change', updateScore);
+    updateScore();
   </script>
 </body>
 </html>
