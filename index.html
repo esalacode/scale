@@ -1,54 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Movie Measure</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>The Short Film Score</title>
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { margin-bottom: 20px; }
-    .question { margin-bottom: 20px; }
-    .options label { display: block; margin: 8px 0; }
-    .average { font-weight: bold; margin-top: 20px; }
+    /* Consistent sizing across browsers */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.45;
+      background: #fff;
+      color: #111;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .question {
+      padding: 16px 14px;
+      border: 1px solid #e6e6e6;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+
+    .question p {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .options label:hover {
+      background: #f6f6f6;
+    }
+
+    input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+    }
+
+    .average {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #f6f6f6;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    /* Slightly larger text on bigger screens */
+    @media (min-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .question p { font-size: 1.1rem; }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Movie Measure</h1>
+  <main class="container">
+    <h1>The Short Film Score</h1>
 
-  <form id="survey">
-    <div class="question" data-index="0">
-      <p><b>1. I like this movie.</b></p>
-      <div class="options">
-        <label><input type="radio" name="q0" value="0.5"> Strongly disagree</label>
-        <label><input type="radio" name="q0" value="2.0"> Disagree</label>
-        <label><input type="radio" name="q0" value="3.5"> Agree</label>
-        <label><input type="radio" name="q0" value="5.0"> Strongly agree</label>
+    <form id="survey">
+      <div class="question" data-index="0">
+        <p>1. I like this movie.</p>
+        <div class="options">
+          <label><input type="radio" name="q0" value="0.5" /> Strongly disagree</label>
+          <label><input type="radio" name="q0" value="2.0" /> Disagree</label>
+          <label><input type="radio" name="q0" value="3.5" /> Agree</label>
+          <label><input type="radio" name="q0" value="5.0" /> Strongly agree</label>
+        </div>
       </div>
-    </div>
 
-    <div class="question" data-index="1">
-      <p><b>2. I am disappointed with this movie.</b></p>
-      <div class="options">
-        <label><input type="radio" name="q1" value="5.0"> Strongly disagree</label>
-        <label><input type="radio" name="q1" value="3.5"> Disagree</label>
-        <label><input type="radio" name="q1" value="2.0"> Agree</label>
-        <label><input type="radio" name="q1" value="0.5"> Strongly agree</label>
+      <div class="question" data-index="1">
+        <p>2. I am disappointed with this movie.</p>
+        <div class="options">
+          <label><input type="radio" name="q1" value="5.0" /> Strongly disagree</label>
+          <label><input type="radio" name="q1" value="3.5" /> Disagree</label>
+          <label><input type="radio" name="q1" value="2.0" /> Agree</label>
+          <label><input type="radio" name="q1" value="0.5" /> Strongly agree</label>
+        </div>
       </div>
-    </div>
 
-    <div class="question" data-index="2">
-      <p><b>3. I regret watching this movie.</b></p>
-      <div class="options">
-        <label><input type="radio" name="q2" value="5.0"> Strongly disagree</label>
-        <label><input type="radio" name="q2" value="3.5"> Disagree</label>
-        <label><input type="radio" name="q2" value="2.0"> Agree</label>
-        <label><input type="radio" name="q2" value="0.5"> Strongly agree</label>
+      <div class="question" data-index="2">
+        <p>3. I regret watching this movie.</p>
+        <div class="options">
+          <label><input type="radio" name="q2" value="5.0" /> Strongly disagree</label>
+          <label><input type="radio" name="q2" value="3.5" /> Disagree</label>
+          <label><input type="radio" name="q2" value="2.0" /> Agree</label>
+          <label><input type="radio" name="q2" value="0.5" /> Strongly agree</label>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
 
-  <div class="average" id="scoreContainer" style="display: none;">
-    Movie score: <span id="average">-</span>
-  </div>
+    <div class="average" id="scoreContainer" style="display: none;">
+      Film score: <span id="average">-</span>
+    </div>
+  </main>
 
   <script>
     const form = document.getElementById('survey');
