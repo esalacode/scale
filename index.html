@@ -171,7 +171,7 @@
       // Overall score in {0.5, 1.0, ..., 5.0}
       const filmScore = 0.5 + 0.5 * total; // total in 0..9
       scoreContainer.style.display = 'block';
-      averageEl.textContent = filmScore.toFixed(2);
+      averageEl.textContent = filmScore.toFixed(1);
     } else {
       scoreContainer.style.display = 'none';
       averageEl.textContent = '-';
