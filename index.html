@@ -138,10 +138,13 @@
   const averageEl = document.getElementById('average');
 
   // Allow radios to be deselected by clicking the selected option again.
-  form.querySelectorAll('input[type="radio"]').forEach(radio => {
-    radio.addEventListener('mousedown', function () {
+    form.querySelectorAll('input[type="radio"]').forEach(radio => {
+    const mark = function () {
       this.dataset.wasChecked = this.checked ? "1" : "0";
-    });
+    };
+
+    radio.addEventListener('pointerdown', mark);
+    radio.addEventListener('mousedown', mark); // fallback
 
     radio.addEventListener('click', function () {
       if (this.dataset.wasChecked === "1") {
