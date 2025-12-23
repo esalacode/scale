@@ -137,23 +137,39 @@
   const scoreContainer = document.getElementById('scoreContainer');
   const averageEl = document.getElementById('average');
 
-  // Allow radios to be deselected by clicking the selected option again.
-    form.querySelectorAll('input[type="radio"]').forEach(radio => {
-    const mark = function () {
-      this.dataset.wasChecked = this.checked ? "1" : "0";
-    };
+    // Allow radios to be deselected by tapping the option row (label), not just the dot.
+  const getRadioFromEvent = (e) => {
+    const label = e.target.closest('label');
+    if (label) return label.querySelector('input[type="radio"]');
+    return e.target.matches?.('input[type="radio"]') ? e.target : null;
+  };
 
-    radio.addEventListener('pointerdown', mark);
-    radio.addEventListener('mousedown', mark); // fallback
+  // Capture pointer/mouse down anywhere in the option row so we know if it was already selected.
+  const mark = (e) => {
+    const radio = getRadioFromEvent(e);
+    if (!radio) return;
+    radio.dataset.wasChecked = radio.checked ? "1" : "0";
+  };
 
-    radio.addEventListener('click', function () {
-      if (this.dataset.wasChecked === "1") {
-        this.checked = false;
+  form.addEventListener('pointerdown', mark, true);
+  form.addEventListener('mousedown', mark, true); // fallback
+
+  // If the option was already checked, uncheck it on click.
+  form.addEventListener(
+    'click',
+    (e) => {
+      const radio = getRadioFromEvent(e);
+      if (!radio) return;
+
+      if (radio.dataset.wasChecked === "1") {
+        e.preventDefault();
+        radio.checked = false;
         form.dispatchEvent(new Event('change', { bubbles: true }));
       }
-      delete this.dataset.wasChecked;
-    });
-  });
+      delete radio.dataset.wasChecked;
+    },
+    true
+  );
 
   function updateScore() {
     let total = 0;
